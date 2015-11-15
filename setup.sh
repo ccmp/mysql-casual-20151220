@@ -27,6 +27,10 @@ wait
 echo "Run Playbook"
 time ansible-playbook -i hosts main.yml -vv
 
+echo Run the following 
+echo "ssh v001 '/root/setup_master.sh; /root/setup_slave.sh v002'"
+echo "ssh v002 '/root/setup_slave.sh v001'"
+
 echo START=$START
 echo END=$(date)
 
