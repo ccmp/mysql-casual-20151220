@@ -4,24 +4,20 @@ open_files_limit = 32768
 
 [mysqld]
 server_id={{ inventory_hostname | regex_replace('^v0*', '') }}
-port=3306
 report_host={{ inventory_hostname }}
 report_port=3306
 
-symbolic-links=0
 sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES 
 default-storage-engine=innodb
 
-#innodb_buffer_pool_size=1GB # less than total memory, more than db size if possible
-innodb_io_capacity=8000 # Storage io capacity
+#innodb_buffer_pool_size=1GB 
+innodb_io_capacity=8000
 skip_innodb_doublewrite
 innodb_flush_method=O_DIRECT
 
 innodb_flush_log_at_trx_commit=1
-#innodb_flush_log_at_trx_commit=0
 sync_binlog=1
 
-#Replication
 log-bin=binlog
 log-slave-updates
 gtid-mode=ON
@@ -36,12 +32,6 @@ relay_log_recovery=on
 max_binlog_size=128MB
 sync_binlog=1
 
-## The followings will be set while the mysqls are online.
-#rpl_semi_sync_master_enabled=1
-#rpl_semi_sync_master_timeout=1000 # 1 second
-#rpl_semi_sync_slave_enabled=1
-
-#misc
 max_connect_errors=10000
 
 slow_query_log = 1
