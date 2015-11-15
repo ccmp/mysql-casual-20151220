@@ -1,0 +1,9 @@
+#!/bin/bash
+
+sleep 0.5
+
+exec 2>&1
+exec  /usr/sbin/keepalived -nlDP -f /etc/keepalived/vrrp/vrrp.conf -p /var/run/vrrp.pid
+
+# -n: don't fork, -l: log console, -D:log-detail, -P:VRRP only
+

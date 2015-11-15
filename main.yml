@@ -1,0 +1,47 @@
+# Usage:
+#  ansible-playbook -i ./hosts ./main.yml -vv
+#
+
+- hosts: dbs
+  remote_user: root
+
+  tasks:
+
+  - get_url: url={{ item }} dest=/root/ mode=0440
+    with_items:
+      - http://dev.mysql.com/get/mysql-apt-config_0.5.3-1_all.deb
+      - https://www.percona.com/downloads/XtraBackup/Percona-XtraBackup-2.3.2/binary/debian/jessie/x86_64/percona-xtrabackup_2.3.2-1.jessie_amd64.deb
+
+  - apt: deb=/root/{{ item }} state=installed
+    with_items:
+      - mysql-apt-config_0.5.3-1_all.deb
+      - percona-xtrabackup_2.3.2-1.jessie_amd64.deb
+
+  - apt: pkg={{ item }} state=present update_cache=yes
+    with_items:
+      - mysql-community-server
+
+  - template: src=./files/etc/mysql/conf.d/casual.cnf dest=/etc/mysql/conf.d/casual.cnf
+    notify: restart-mysqld
+
+  - copy: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
+    with_items:
+      - { name: '/root/find_master.sh', mode: '0700' }
+      - { name: '/root/master_setup.sh', mode: '0700' }
+      - { name: '/root/slave_setup.sh', mode: '0700' }
+      - { name: '/root/backup_xtrabk.sh', mode: '0700' }
+      - { name: '/root/recovery.sh', mode: '0700' }
+
+  - include: "./vrrp.yml"
+
+#####
+
+  handlers:
+
+  - name: restart-mysqld
+    service: name=mysqld state=restarted enabled=yes
+
+  - name: restart vrrp
+    shell: /usr/bin/svc -t /etc/service/vrrp/
+
+

@@ -1,0 +1,43 @@
+
+##### keepalived
+
+  - apt: pkg={{ item }} state=present
+    with_items:
+      - keepalived
+      - daemontools-run
+      - netcat
+
+  - file: path={{ item.dir }} state=directory owner={{ item.owner }} group={{ item.group}}
+    with_items:
+      - { dir: '/etc/keepalived', owner: 'root', group: 'root' }
+      - { dir: '/etc/keepalived/vrrp', owner: 'root', group: 'root' }
+
+  - copy: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
+    with_items:
+      - { name: '/etc/keepalived/vrrp/mysqlchk.sh', mode: '0700' }
+      - { name: '/etc/keepalived/vrrp/master.sh', mode: '0700' }
+      - { name: '/etc/keepalived/vrrp/backup.sh', mode: '0700' }
+      - { name: '/etc/keepalived/vrrp/vrrp.conf', mode: '0644' }
+    notify:
+    - restart vrrp
+
+##### Services
+
+  - file: path={{ item.dir }} state=directory owner={{ item.owner }} group={{ item.group}}
+    with_items:
+      - { dir: '/usr/service/vrrp', owner: 'root', group: 'root' }
+      - { dir: '/usr/service/vrrp/log', owner: 'root', group: 'root' }
+
+  - copy: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
+    with_items:
+      - { name: '/usr/service/vrrp/run', mode: '0700' }
+      - { name: '/usr/service/vrrp/log/run', mode: '0700' }
+    notify:
+    - restart vrrp
+
+  - file: src=/usr/service/vrrp dest=/etc/service/vrrp state=link
+    notify:
+    - restart vrrp
+
+
+
