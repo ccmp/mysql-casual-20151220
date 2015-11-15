@@ -17,20 +17,25 @@
       - mysql-apt-config_0.5.3-1_all.deb
       - percona-xtrabackup_2.3.2-1.jessie_amd64.deb
 
+  - copy: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
+    with_items:
+      - { name: '/etc/apt/sources.list.d/mysql.list', mode: '0644' }
+
   - apt: pkg={{ item }} state=present update_cache=yes
     with_items:
       - mysql-community-server
+
+  - file: path={{ item.dir }} state=directory owner={{ item.owner }} group={{ item.group}} mode={{ item.mode }}
+    with_items:
+      - { dir: '/var/run/mysqld/', owner: 'mysql', group: 'mysql', mode: '0750' } 
 
   - template: src=./files/etc/mysql/conf.d/casual.cnf dest=/etc/mysql/conf.d/casual.cnf
     notify: restart-mysqld
 
   - copy: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
     with_items:
-      - { name: '/root/find_master.sh', mode: '0700' }
-      - { name: '/root/master_setup.sh', mode: '0700' }
-      - { name: '/root/slave_setup.sh', mode: '0700' }
-      - { name: '/root/backup_xtrabk.sh', mode: '0700' }
-      - { name: '/root/recovery.sh', mode: '0700' }
+      - { name: '/root/setup_master.sh', mode: '0700' }
+      - { name: '/root/setup_slave.sh', mode: '0700' }
 
   - include: "./vrrp.yml"
 
@@ -39,9 +44,8 @@
   handlers:
 
   - name: restart-mysqld
-    service: name=mysqld state=restarted enabled=yes
+    service: name=mysql state=restarted enabled=yes
 
   - name: restart vrrp
     shell: /usr/bin/svc -t /etc/service/vrrp/
-
 

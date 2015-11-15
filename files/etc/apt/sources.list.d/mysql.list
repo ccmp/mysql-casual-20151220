@@ -1,0 +1,10 @@
+
+deb http://repo.mysql.com/apt/debian/ jessie mysql-apt-config
+deb http://repo.mysql.com/apt/debian/ jessie mysql-5.7
+# deb http://repo.mysql.com/apt/debian/ jessie workbench-6.3
+deb http://repo.mysql.com/apt/debian/ jessie connector-python-2.1
+deb http://repo.mysql.com/apt/debian/ jessie mysql-utilities-1.5
+deb http://repo.mysql.com/apt/debian/ jessie router-2.0
+
+deb-src http://repo.mysql.com/apt/debian/ jessie mysql-5.7
+
