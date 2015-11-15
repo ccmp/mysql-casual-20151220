@@ -9,3 +9,8 @@
     environment:
       DEBIAN_FRONTEND: "noninteractive"
 
+  - copy: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
+    with_items:
+      - { name: '/root/xtrabackup.sh', mode: '0700' }
+      - { name: '/root/xtrarecovery.sh', mode: '0700' }
+
