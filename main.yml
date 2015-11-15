@@ -10,12 +10,14 @@
   - get_url: url={{ item }} dest=/root/ mode=0440
     with_items:
       - http://dev.mysql.com/get/mysql-apt-config_0.5.3-1_all.deb
-      - https://www.percona.com/downloads/XtraBackup/Percona-XtraBackup-2.3.2/binary/debian/jessie/x86_64/percona-xtrabackup_2.3.2-1.jessie_amd64.deb
 
-  - apt: deb=/root/{{ item }} state=installed
+  - apt: update_cache=yes
+
+  - apt: deb=/root/{{ item }} state=installed 
     with_items:
       - mysql-apt-config_0.5.3-1_all.deb
-      - percona-xtrabackup_2.3.2-1.jessie_amd64.deb
+    environment:
+      DEBIAN_FRONTEND: "noninteractive"
 
   - copy: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
     with_items:
@@ -43,6 +45,7 @@
 
   - include: "./vrrp.yml"
 
+  - include: "./xtrabackup.yml"
 #####
 
   handlers:
