@@ -17,5 +17,9 @@ mysql -u rep -prep  -h $hst -e 'show slave status\G;' 2>/dev/null \
 
 echo
 
+ssh $hst /sbin/ip add |egrep "172.16.1.251"
+
+echo
+
 done
 
