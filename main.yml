@@ -35,7 +35,6 @@
   - template: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
     with_items:
       - { name: '/etc/mysql/my.cnf', mode: '0644' }
-      - { name: '/etc/mysql/conf.d/casual.cnf', mode: '0644' }
     notify: restart-mysqld
 
   - copy: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
