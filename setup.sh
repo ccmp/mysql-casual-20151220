@@ -2,7 +2,7 @@
 
 START=$(date)
 
-apt-get install python git gcc python-setuptools python-dev -y
+apt-get install python git gcc python-setuptools python-dev mysql-client -y
 easy_install pip 
 pip install ansible 
 
