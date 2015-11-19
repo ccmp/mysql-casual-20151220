@@ -42,7 +42,6 @@
     with_items:
       - { name: '/root/setup_master.sh', mode: '0700' }
       - { name: '/root/setup_slave.sh', mode: '0700' }
-      - { name: '/root/chk_dbs.sh', mode: '0700' }
 
   - include: "./vrrp.yml"
 
