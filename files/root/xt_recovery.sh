@@ -10,9 +10,9 @@ BKFILE=$1
 MASTER=$2
 
 TMPDIR=./xtrabackup_tmp
-MYCNF=/etc/mysqld/my.cnf 
-DBDIR=/var/lib/mysqld
-DBDIR=/var/run/mysqld/mysqld.sock
+MYCNF=/etc/mysql/my.cnf 
+DBDIR=/var/lib/mysql
+SOCK=/var/run/mysqld/mysqld.sock
 
 if [ "$MASTER" = "" ] ; then usage ; fi
 [ ! -f $BKFILE ] && echo $BKFILE not found && usage
@@ -28,7 +28,7 @@ mkdir -p $TMPDIR
 
 tar -C $TMPDIR -ixvf $BKFILE 
 innobackupex --use-memory=1G --apply-log $TMPDIR
-innobackupex  --copy-back  --defaults-file=$MYCNF $TMPDIR
+innobackupex --defaults-file=$MYCNF --copy-back $TMPDIR
 chown -R mysql.mysql $DBDIR
 
 cp -p ${MYCNF}{,.bk}
@@ -36,8 +36,8 @@ echo skip-slave-start >> $MYCNF
 service mysql start
 
 mysql -S $SOCK -e "$(egrep -v MASTER_AUTO_POSITION  $DBDIR/xtrabackup_slave_info)"
-mysql -S $SOCK -e " change master to master_host='$MASTER',master_port=3306, master_user='rep', master_password='rep', master_auto_position=1 , MASTER_CONNECT_RETRY=10;"
-mysql -S -e "start slave;"
+mysql -S $SOCK -e "change master to master_host='$MASTER',master_port=3306, master_user='rep', master_password='rep', master_auto_position=1 , MASTER_CONNECT_RETRY=10;"
+mysql -S $SOCK -e "start slave;"
 
 sed -i "s/skip-slave-start//g" $MYCNF
 rm -rf $TMPDIR
