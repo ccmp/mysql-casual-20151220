@@ -15,7 +15,9 @@ if [ ! -d mysql-casual-20151220 ]; then
 fi
 
 cd mysql-casual-20151220 
-git checkout master
+git checkout mysql56
+#git checkout mysql57
+#git checkout master
 git pull
 
 for hst in v001 v002 ; do
