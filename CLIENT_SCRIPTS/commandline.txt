@@ -1,4 +1,5 @@
 
+ssh v001 service mysql stop
 
 time mysqlslap --concurrency=50 --iterations=1 --auto-generate-sql --auto-generate-sql-load-type=write --number-of-queries=50000 --host=172.16.1.251 -vv
 
