@@ -3,7 +3,7 @@
 SOCK=/var/run/mysqld/mysqld.sock
 
 while true ; do
-mysql -S $SOCK -e "show slave status\G;"|egrep "Seconds_Behind_Master: 0"
+mysql -S $SOCK -e "show slave status\G;"|egrep "Seconds_Behind_Master: 0|Seconds_Behind_Master: NULL"
 if [ "$?" = "0" ] ; then 
 	break
 else

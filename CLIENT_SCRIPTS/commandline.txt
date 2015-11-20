@@ -1,6 +1,12 @@
+#####Demo 1.1
+time mysqlslap --concurrency=50 --iterations=1 --auto-generate-sql --auto-generate-sql-load-type=write --number-of-queries=10000 --host=172.16.1.251 -vv
 
 ssh v001 service mysql stop
+ssh v001 service mysql start
 
-time mysqlslap --concurrency=50 --iterations=1 --auto-generate-sql --auto-generate-sql-load-type=write --number-of-queries=50000 --host=172.16.1.251 -vv
+#####Demo 1.2
+time mysqlslap --concurrency=50 --iterations=1 --auto-generate-sql --auto-generate-sql-load-type=write --number-of-queries=20000 --host=172.16.1.251 -vv
 
+ssh v002 service mysql stop
+ssh v002 service mysql start
 
