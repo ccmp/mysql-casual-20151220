@@ -1,11 +1,12 @@
 
   - get_url: url={{ item }} dest=/root/ mode=0440
     with_items:
-      - https://www.percona.com/downloads/XtraBackup/Percona-XtraBackup-2.3.2/binary/debian/jessie/x86_64/percona-xtrabackup_2.3.2-1.jessie_amd64.deb
-
+#      - https://www.percona.com/downloads/XtraBackup/Percona-XtraBackup-2.3.2/binary/debian/jessie/x86_64/percona-xtrabackup_2.3.2-1.jessie_amd64.deb
+       - https://www.percona.com/downloads/XtraBackup/Percona-XtraBackup-2.4.11/binary/debian/jessie/x86_64/percona-xtrabackup-24_2.4.11-1.jessie_amd64.deb
   - apt: deb=/root/{{ item }} state=installed
     with_items:
-      - percona-xtrabackup_2.3.2-1.jessie_amd64.deb
+#      - percona-xtrabackup_2.3.2-1.jessie_amd64.deb
+      - percona-xtrabackup-24_2.4.11-1.jessie_amd64.deb 
     environment:
       DEBIAN_FRONTEND: "noninteractive"
 
