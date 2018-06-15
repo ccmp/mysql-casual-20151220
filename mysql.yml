@@ -1,0 +1,29 @@
+# tasks for MySQL
+
+ - get_url: url={{ item }} dest=/root/ mode=0440
+    with_items:
+      - http://dev.mysql.com/get/mysql-apt-config_0.8.10-1_all.deb
+
+  - apt: update_cache=yes
+
+  - apt: deb=/root/{{ item }} state=installed 
+    with_items:
+      - mysql-apt-config_0.8.10-1_all.deb
+    environment:
+      DEBIAN_FRONTEND: "noninteractive"
+
+  - debconf:
+      name: mysql-apt-config
+      question: mysql-apt-config/select-server
+      value: "{{ mysql_select_server }}"
+      vtype: select
+
+  - copy: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
+    with_items:
+      - { name: '/etc/apt/apt.conf', mode: '0644' }
+
+  - apt: pkg={{ item }} state=present update_cache=yes
+    with_items:
+      - mysql-community-server
+
+ 

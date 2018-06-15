@@ -1,0 +1,23 @@
+#
+#
+  - apt: pkg={{ item }} state=present update_cache=yes
+    with_items:
+      - software-properties-common
+
+  - apt_key:
+      keyserver: keyserver.ubuntu.com
+      id: cbcb082a1bb943db
+
+  - apt_repository:
+      repo: deb http://ftp.yz.yamagata-u.ac.jp/pub/dbms/mariadb/repo/10.3/debian jessie main
+      state: present
+
+  - apt: pkg={{ item }} state=present update_cache=yes
+    with_items:
+      - mariadb-server
+
+#sudo apt-get install software-properties-common
+#sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db
+#sudo add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://ftp.yz.yamagata-u.ac.jp/pub/dbms/mariadb/repo/10.3/debian jessie main'
+#sudo apt-get update
+#sudo apt-get install mariadb-server

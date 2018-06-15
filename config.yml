@@ -1,5 +1,14 @@
+# DB
+# mysql
+# mariaDB
+# percona
+use_db : mysql
+
 # MySQL Server
 # mysql-5.6
 # mysql-5.7
 # mysql-8.0
-select_server : mysql-8.0
+mysql_select_server : mysql-8.0
+
+# Maria
+#

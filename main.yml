@@ -26,7 +26,7 @@
   - debconf:
       name: mysql-apt-config
       question: mysql-apt-config/select-server
-      value: "{{ select_server }}"
+      value: "{{ mysql_select_server }}"
       vtype: select
       
   - copy: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
@@ -55,6 +55,8 @@
   - include: "./vrrp.yml"
 
   - include: "./xtrabackup.yml"
+
+  - include: "./mariadb.yml"
 #####
 
   handlers:
