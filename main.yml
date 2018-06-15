@@ -23,15 +23,15 @@
     environment:
       DEBIAN_FRONTEND: "noninteractive"
 
-  - defconf:
+  - debconf:
       name: mysql-apt-config
       question: mysql-apt-config/select-server
-      value: {{ select_server }}
+      value: "{{ select_server }}"
       vtype: select
       
   - copy: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
     with_items:
-      - { name: '/etc/apt/sources.list.d/mysql.list', mode: '0644' }
+#      - { name: '/etc/apt/sources.list.d/mysql.list', mode: '0644' }
       - { name: '/etc/apt/apt.conf', mode: '0644' }
 
   - apt: pkg={{ item }} state=present update_cache=yes
