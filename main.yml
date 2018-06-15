@@ -4,7 +4,9 @@
 
 - hosts: dbs
   remote_user: root
-
+  vars_files:
+    - config.yml
+    
   tasks:
 
   - get_url: url={{ item }} dest=/root/ mode=0440
@@ -21,6 +23,12 @@
     environment:
       DEBIAN_FRONTEND: "noninteractive"
 
+  - defconf:
+      name: mysql-apt-config
+      question: mysql-apt-config/select-server
+      value: {{ select_server }}
+      vtype: select
+      
   - copy: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
     with_items:
       - { name: '/etc/apt/sources.list.d/mysql.list', mode: '0644' }
