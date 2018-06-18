@@ -1,0 +1,30 @@
+#
+#
+  - get_url: url={{ item }} dest=/root/ mode=0440
+    with_items:
+      - https://repo.percona.com/apt/percona-release_0.1-6.{{ ansible_distribution_release }}_all.deb
+
+  - apt: deb=/root/{{ item }} state=installed 
+    with_items:
+      - percona-release_0.1-6.{{ ansible_distribution_release }}_all.deb
+    environment:
+      DEBIAN_FRONTEND: "noninteractive"
+
+  - apt: update_cache=yes
+
+  - apt: pkg={{ item }} state=present update_cache=yes
+    with_items:
+      - percona-server-server
+
+  - template: src=./files/percona/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
+    with_items:
+      - { name: '/etc/mysql/my.cnf', mode: '0644' }
+    notify: restart-mysqld
+
+# wget https://repo.percona.com/apt/percona-release_0.1-6.$(lsb_release -sc)_all.deb
+# dpkg -i percona-release_0.1-6.$(lsb_release -sc)_all.deb
+# sudo apt-get update
+# sudo apt-get install percona-server-server-5.7
+
+
+

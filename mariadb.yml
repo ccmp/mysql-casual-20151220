@@ -16,6 +16,11 @@
     with_items:
       - mariadb-server
 
+  - template: src=./files/mariadb/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
+    with_items:
+      - { name: '/etc/mysql/my.cnf', mode: '0644' }
+    notify: restart-mysqld
+
 #sudo apt-get install software-properties-common
 #sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db
 #sudo add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://ftp.yz.yamagata-u.ac.jp/pub/dbms/mariadb/repo/10.3/debian jessie main'

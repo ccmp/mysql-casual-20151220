@@ -9,43 +9,43 @@
     
   tasks:
 
-  - get_url: url={{ item }} dest=/root/ mode=0440
-    with_items:
+#  - get_url: url={{ item }} dest=/root/ mode=0440
+#    with_items:
 #      - http://dev.mysql.com/get/mysql-apt-config_0.5.3-1_all.deb
-      - http://dev.mysql.com/get/mysql-apt-config_0.8.10-1_all.deb
+#      - http://dev.mysql.com/get/mysql-apt-config_0.8.10-1_all.deb
 
   - apt: update_cache=yes
 
-  - apt: deb=/root/{{ item }} state=installed 
-    with_items:
+#  - apt: deb=/root/{{ item }} state=installed 
+#    with_items:
 #      - mysql-apt-config_0.5.3-1_all.deb
-      - mysql-apt-config_0.8.10-1_all.deb
-    environment:
-      DEBIAN_FRONTEND: "noninteractive"
+#      - mysql-apt-config_0.8.10-1_all.deb
+#    environment:
+#      DEBIAN_FRONTEND: "noninteractive"
 
-  - debconf:
-      name: mysql-apt-config
-      question: mysql-apt-config/select-server
-      value: "{{ mysql_select_server }}"
-      vtype: select
+#  - debconf:
+#      name: mysql-apt-config
+#      question: mysql-apt-config/select-server
+#      value: "{{ mysql_select_server }}"
+#      vtype: select
       
-  - copy: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
-    with_items:
+#  - copy: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
+#    with_items:
 #      - { name: '/etc/apt/sources.list.d/mysql.list', mode: '0644' }
-      - { name: '/etc/apt/apt.conf', mode: '0644' }
+#      - { name: '/etc/apt/apt.conf', mode: '0644' }
 
-  - apt: pkg={{ item }} state=present update_cache=yes
-    with_items:
-      - mysql-community-server
+#  - apt: pkg={{ item }} state=present update_cache=yes
+#    with_items:
+#      - mysql-community-server
 
-  - file: path={{ item.dir }} state=directory owner={{ item.owner }} group={{ item.group}} mode={{ item.mode }}
-    with_items:
-      - { dir: '/var/run/mysqld/', owner: 'mysql', group: 'mysql', mode: '0750' } 
+#  - file: path={{ item.dir }} state=directory owner={{ item.owner }} group={{ item.group}} mode={{ item.mode }}
+#    with_items:
+#      - { dir: '/var/run/mysqld/', owner: 'mysql', group: 'mysql', mode: '0750' } 
 
-  - template: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
-    with_items:
-      - { name: '/etc/mysql/my.cnf', mode: '0644' }
-    notify: restart-mysqld
+#  - template: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
+#    with_items:
+#      - { name: '/etc/mysql/my.cnf', mode: '0644' }
+#    notify: restart-mysqld
 
   - copy: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
     with_items:
@@ -56,7 +56,8 @@
 
   - include: "./xtrabackup.yml"
 
-  - include: "./mariadb.yml"
+#  - include: "./mariadb.yml"
+  - include: "./percona.yml"
 #####
 
   handlers:
