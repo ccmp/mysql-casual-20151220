@@ -14,7 +14,7 @@
 
   - apt: pkg={{ item }} state=present update_cache=yes
     with_items:
-      - percona-server-server
+      - percona-server-server-{{ percona_select_server }}
 
   - template: src=./files/percona/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
     with_items:
